@@ -23,6 +23,11 @@ const { values } = parseArgs({
       short: "d",
       default: "/nas",
     },
+    unref: {
+      type: "boolean",
+      short: "u",
+      default: false,
+    },
   },
   strict: true,
   allowPositionals: true,
@@ -55,7 +60,10 @@ if (!values["no-save"]) {
   mpvArgs.push("--save-position-on-quit");
 }
 const mpv = Bun.spawn(["mpv", ...mpvArgs], {
+  stdin: "inherit",
   stdout: "inherit",
   stderr: "inherit",
 });
-mpv.unref();
+if (values.unref) {
+  mpv.unref();
+}
