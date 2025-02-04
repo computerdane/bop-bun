@@ -1,25 +1,24 @@
 {
   bun,
+  makeWrapper,
   stdenv,
-  writeShellApplication,
 }:
 
-let
-  bop = writeShellApplication {
-    name = "bop";
-    runtimeInputs = [ bun ];
-    text = "bun bop.ts";
-  };
-in
 stdenv.mkDerivation {
   pname = "bop";
   version = "0.0.1";
 
   src = ./.;
 
+  buildInputs = [
+    bun
+    makeWrapper
+  ];
+
   installPhase = ''
-    mkdir -p $out/bin
-    cp $src/bop.ts $out/bin/bop.ts
-    cp ${bop}/bin/bop $out/bin/bop
+    mkdir -p $out/lib
+    cp $src/bop.ts $out/lib/bop.ts
+    makeWrapper ${bun}/bin/bun $out/bin/bop \
+      --add-flags "$out/lib/bop.ts"
   '';
 }
