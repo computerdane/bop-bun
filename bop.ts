@@ -1,4 +1,5 @@
 import { parseArgs } from "util";
+import { shuffleArray } from "./util";
 
 const { values } = parseArgs({
   args: Bun.argv,
@@ -26,6 +27,11 @@ const { values } = parseArgs({
     album: {
       type: "boolean",
       short: "a",
+      default: false,
+    },
+    shuffle: {
+      type: "boolean",
+      short: "s",
       default: false,
     },
   },
@@ -69,6 +75,9 @@ if (values.album) {
   paths = output3.split("\n");
   for (const [i, path] of paths.entries()) {
     paths[i] = `${output2}/${path}`;
+  }
+  if (values.shuffle) {
+    paths = shuffleArray(paths);
   }
 } else {
   paths = [output2];

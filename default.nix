@@ -17,7 +17,7 @@ stdenv.mkDerivation {
 
   installPhase = ''
     mkdir -p $out/lib
-    cp $src/bop.ts $out/lib/bop.ts
+    cp $src/*.ts $out/lib/
     makeWrapper ${bun}/bin/bun $out/bin/bop \
       --add-flags "$out/lib/bop.ts"
   '';
